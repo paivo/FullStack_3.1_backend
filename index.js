@@ -1,13 +1,25 @@
 const express = require('express')
 var morgan = require('morgan')
+const mongoose = require('mongoose')
+
 
 const app = express()
 app.use(express.json())
 app.use(express.static('build'))
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 const cors = require('cors')
-
 app.use(cors())
+
+const url =`mongodb+srv://pave:${password}@cluster0-wzsgm.mongodb.net/person-app?retryWrites=true&w=majority`
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: String,
+  id: Number,
+})
+
+const Note = mongoose.model('Note', noteSchema)
 
 let persons = [
     { 
@@ -64,7 +76,7 @@ const generateId = () => {
       ? Math.max(...persons.map(p => p.id))
       : 0
     return maxId + 1
-  }
+}
   
   app.post('/api/persons', (req, res) => {
     const body = req.body
