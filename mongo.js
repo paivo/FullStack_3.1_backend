@@ -6,7 +6,6 @@ if ( process.argv.length<3 ) {
 }
 
 const password = process.argv[2]
-
 const url =
     `mongodb+srv://pave:${password}@cluster0-wzsgm.mongodb.net/person-app?retryWrites=true&w=majority`
 
@@ -29,18 +28,10 @@ if ( process.argv.length<4 ) {
         mongoose.connection.close()
     },
 )} else {
-    const generateId = () => {
-        persons = Person.find({})
-        const maxId = persons.length > 0
-        ? Math.max(...persons.map(p => p.id))
-        : 0
-        return maxId + 1
-    }
-
+    
     const person = new Person({
         name: process.argv[3],
         number: process.argv[4],
-        id: generateId(),
     })
 
     person.save().then(response => {
@@ -48,4 +39,3 @@ if ( process.argv.length<4 ) {
         mongoose.connection.close()
     })
 }
-
